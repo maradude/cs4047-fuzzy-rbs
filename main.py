@@ -33,7 +33,7 @@ def plot3d():
     make_plot(x, y, z, xv, yv, zv)
 
 
-def read_ex_file(fpath):
+def read_ex_file(fpath, verbose):
     """
     show defuzzed consequences along with plots for all
     fuzzy variable membership functions with membership level
@@ -48,16 +48,17 @@ def read_ex_file(fpath):
         print(f"{var.label} defuzzied is {defuzzed}")
     for var in sim.ctrl.fuzzy_variables:
         sim.view(var)
-    sim.print_state()
+    if verbose:
+        sim.print_state()
 
 
-def do_experiment(label):
+def do_experiment(label, verbose):
     if label == "1":
-        read_ex_file("example.txt")
+        read_ex_file("example.txt", verbose)
     if label == '2':
         plot3d()
     if label == "3":
-        read_ex_file("example2.txt")
+        read_ex_file("example2.txt", verbose)
 
 
 if __name__ == "__main__":
@@ -80,8 +81,15 @@ if __name__ == "__main__":
         default=None,
         help="choose a premade experiment",
     )
+    parser.add_argument(
+        "-v",
+        "--verbose",
+        action='store_true',
+        help="print additional state information",
+    )
     args = vars(parser.parse_args())
+    verbose = args.get('verbose')
     if label := args.get("experiment"):
-        do_experiment(label)
+        do_experiment(label, verbose)
     else:
-        read_ex_file(args.get("path"))
+        read_ex_file(args.get("path"), verbose)
