@@ -21,14 +21,22 @@ Rule 2:	if <variable-2> is <value-2> [and|or] [<variable-n> is <value-n>] then <
 """
 
 
-def plot3d():
+def plot3d(fpath):
     """
-    map all driving and journey time values to a
-    3d graphic representation.
+    given a fuzzy rulebase with only 2 antecedents and 1 consequent
+    produce a 3d plot of all combinations of the antecedents values
     """
-    f = parse_file("example.txt")
-    xv, yv, zv = "driving", "journey_time", "tip"
-    sim_ctrl = ControllerController(f[0], f[1], flush_after_run=20*100+1)
+    rules, values, _ = parse_file(fpath)
+    its = []
+    if len(rules.antecedents) != 2 or len(rules.consequents) != 1:
+        raise ValueError("can only 3d graph simulations with 2 antecedents and 1 consequent")
+    for v in values:
+        if v.name in rules.antecedents:
+            its.append(max(y for x in v.values.values() for y in x) - min(y for x in v.values.values() for y in x))
+    iterations = its[0] * its[1] + 1
+    sim_ctrl = ControllerController(rules, values, flush_after_run=iterations)
+    xv, yv = list(x.label for x in sim_ctrl.ctrl.antecedents)
+    zv, *_ = list(x.label for x in sim_ctrl.ctrl.consequents)
     x, y, z = plot3dFRB(sim_ctrl.simulator, xv, yv, zv)
     make_plot(x, y, z, xv, yv, zv)
 
@@ -56,7 +64,7 @@ def do_experiment(label, verbose):
     if label == "1":
         read_ex_file("example.txt", verbose)
     if label == '2':
-        plot3d()
+        plot3d("example.txt")
     if label == "3":
         read_ex_file("example2.txt", verbose)
 
