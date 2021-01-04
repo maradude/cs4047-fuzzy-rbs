@@ -13,5 +13,6 @@ main.py from a jupyter notebook seemed to be an potential workaround.
 2. Install the packages listed in requirements.txt
   - `pip install -r requirements.txt`
 3. Run the main.py with appropriate command line arguments
-  - e.g. `python main.py -e 1` to run the first premade experiment
+  - `python main.py -e tipping` to run the first premade experiment
+  - `python main.py -e 3d` to run the second premade experiment
   - e.g. `python main.py -f ./example.txt` to use the rules, variables, values and measurements inside to run a quick defuzz with additional information and plots. Substitute `./example.txt` with any path to a valid fuzzy rulebase system config file.
