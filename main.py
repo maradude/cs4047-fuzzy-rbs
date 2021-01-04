@@ -21,18 +21,24 @@ Rule 2:	if <variable-2> is <value-2> [and|or] [<variable-n> is <value-n>] then <
 """
 
 
-def plot3d(fpath):
+def plot3d(fpath, verbose):
     """
-    given a fuzzy rulebase with only 2 antecedents and 1 consequent
-    produce a 3d plot of all combinations of the antecedents values
+    Although this function look generic in parts,
+    plot3dFBR is not generic and requires the variables
+    values to the same as example.txt
     """
     rules, values, _ = parse_file(fpath)
     its = []
     if len(rules.antecedents) != 2 or len(rules.consequents) != 1:
-        raise ValueError("can only 3d graph simulations with 2 antecedents and 1 consequent")
+        raise ValueError(
+            "can only 3d graph simulations with 2 antecedents and 1 consequent"
+        )
     for v in values:
         if v.name in rules.antecedents:
-            its.append(max(y for x in v.values.values() for y in x) - min(y for x in v.values.values() for y in x))
+            its.append(
+                max(y for x in v.values.values() for y in x)
+                - min(y for x in v.values.values() for y in x)
+            )
     iterations = its[0] * its[1] + 1
     sim_ctrl = ControllerController(rules, values, flush_after_run=iterations)
     xv, yv = list(x.label for x in sim_ctrl.ctrl.antecedents)
@@ -43,7 +49,7 @@ def plot3d(fpath):
 
 def read_ex_file(fpath, verbose):
     """
-    show defuzzed consequences along with plots for all
+    show defuzzed consequents along with plots for all
     fuzzy variable membership functions with membership level
     highlighted.
     """
@@ -61,12 +67,10 @@ def read_ex_file(fpath, verbose):
 
 
 def do_experiment(label, verbose):
-    if label == "1":
+    if label == "tipping":
         read_ex_file("example.txt", verbose)
-    if label == '2':
-        plot3d("example.txt")
-    if label == "3":
-        read_ex_file("example2.txt", verbose)
+    if label == "3d":
+        plot3d("example.txt", verbose)
 
 
 if __name__ == "__main__":
@@ -85,18 +89,18 @@ if __name__ == "__main__":
     group.add_argument(
         "-e",
         "--experiment",
-        choices=["1", "2", "3"],
+        choices=["tipping", "3d"],
         default=None,
         help="choose a premade experiment",
     )
     parser.add_argument(
         "-v",
         "--verbose",
-        action='store_true',
+        action="store_true",
         help="print additional state information",
     )
     args = vars(parser.parse_args())
-    verbose = args.get('verbose')
+    verbose = args.get("verbose")
     if label := args.get("experiment"):
         do_experiment(label, verbose)
     else:

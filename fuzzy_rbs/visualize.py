@@ -37,4 +37,7 @@ def make_plot(x, y, z, x_lab, y_lab, z_lab):
     ax.plot_surface(
         x, y, z, rstride=1, cstride=1, cmap="viridis", linewidth=0.4, antialiased=True
     )
-    ax.view_init(30, 200)
+    ax.set_xlabel(x_lab)
+    ax.set_ylabel(y_lab)
+    ax.set_zlabel(z_lab)
+    ax.view_init(30, 120)

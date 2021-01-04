@@ -6,7 +6,7 @@ for unknown reasons for me, so this monkey patch "fixes" the broken
 print state with the newer version but keeps the rest of the code
 the same.
 
-The bug might be a python 2 only bug.
+The bug might be a python 3 only bug.
 
 permalink to method:
 https://github.com/scikit-fuzzy/scikit-fuzzy/blob/eecf303b701e3efacdc9b9066207ef605d4facaa/skfuzzy/control/controlsystem.py#L514

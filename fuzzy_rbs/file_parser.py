@@ -34,7 +34,7 @@ variable = "{name:w} is {value:w}"
 
 
 @dataclass
-class RuleBase:
+class RuleBase():
     name: str = ""
     rules: list[dict[str, str]] = field(default_factory=dict)
     antecedents: list[str] = field(default_factory=set)
@@ -57,6 +57,9 @@ def parse_file(filename):
     """
     parse file for rulebase, variables, measurements
     expected order rulebase > variable > measurements
+
+    doesn't load whole file into memory so supports insanely
+    large file sizes
     """
     with open(filename, "r") as f:
         rules = parse_rule_base(f)
@@ -76,7 +79,7 @@ def next_non_empty_line(buffer: TextIOWrapper) -> str:
 def parse_rule_base(buffer: TextIOWrapper) -> RuleBase:
     """
     parse rulebase name and rules along with which variables
-    are antecedents and which are consequences.
+    are antecedents and which are consequents.
     Stops parsing on first empty line after the first rule is parsed
     """
     rule_base = RuleBase()

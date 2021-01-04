@@ -101,18 +101,3 @@ class ControllerController:
 
     def print_state(self):
         self.simulator.print_state()
-
-    # def crispy_values(self, variable):
-    #     crispy = CrispValueCalculator(variable, self.simulator)
-    #     _, output_mf, cut_mfs = crispy.find_memberships()
-    #     if len(cut_mfs) > 0 and not all(output_mf == 0):
-    #         crisp_value = None
-    #         if hasattr(variable, "input"):
-    #             crisp_value = variable.input[self.simulator]
-    #         elif hasattr(variable, "output"):
-    #             crisp_value = variable.output[self.simulator]
-    #         for key, term in variable.terms.items():
-    #             if key in cut_mfs:
-    #                 return fuzz.interp_membership(
-    #                     variable.universe, term.mf, crisp_value
-    #                 )
